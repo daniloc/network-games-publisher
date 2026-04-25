@@ -1,0 +1,10 @@
+{
+	"id": "network-games-publisher",
+	"name": "Network Games Publisher",
+	"version": "0.1.0",
+	"minAppVersion": "1.5.0",
+	"description": "Author and publish posts to the Network Games blog directly from Obsidian — essays, link posts, and notes — via the GitHub Contents API. No git client required.",
+	"author": "Danilo Campos",
+	"authorUrl": "https://danilocampos.com",
+	"isDesktopOnly": false
+}

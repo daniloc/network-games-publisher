@@ -146,6 +146,91 @@ export function detectPostType(source: string): 'essay' | 'link' | 'note' {
 	return 'essay';
 }
 
+export interface LearnMoreEntry {
+	title: string;
+	url: string;
+	description: string;
+}
+
+export function readLearnMore(source: string): LearnMoreEntry[] {
+	const parts = split(source);
+	if (!parts) return [];
+	const lines = parts.fmBody.split(/\r?\n/);
+	const idx = lines.findIndex((l) => /^learnMore:\s*$/.test(l));
+	if (idx === -1) return [];
+
+	const entries: LearnMoreEntry[] = [];
+	let current: Partial<LearnMoreEntry> | null = null;
+
+	for (let i = idx + 1; i < lines.length; i++) {
+		const l = lines[i];
+		if (l.length === 0) continue;
+		if (!/^\s/.test(l)) break;
+
+		const itemMatch = /^\s+-\s+title:\s*(.*)$/.exec(l);
+		if (itemMatch) {
+			if (current) entries.push(completeEntry(current));
+			current = { title: unquoteScalar(itemMatch[1]) };
+			continue;
+		}
+		const fieldMatch = /^\s+(title|url|description):\s*(.*)$/.exec(l);
+		if (fieldMatch && current) {
+			const key = fieldMatch[1] as 'title' | 'url' | 'description';
+			current[key] = unquoteScalar(fieldMatch[2]);
+		}
+	}
+	if (current) entries.push(completeEntry(current));
+	return entries;
+}
+
+export function setLearnMore(source: string, entries: LearnMoreEntry[]): string {
+	const parts = split(source);
+	if (!parts) return source;
+	const lines = parts.fmBody.split(/\r?\n/);
+	const idx = lines.findIndex((l) => /^learnMore:\s*$/.test(l));
+
+	const block =
+		entries.length === 0
+			? []
+			: [
+					'learnMore:',
+					...entries.flatMap((e) => [
+						`  - title: "${escapeDouble(e.title)}"`,
+						`    url: '${escapeSingle(e.url)}'`,
+						`    description: "${escapeDouble(e.description)}"`
+					])
+				];
+
+	if (idx === -1) {
+		if (entries.length === 0) return source;
+		const before = lines.filter((l) => l.length > 0);
+		parts.fmBody = [...before, ...block].join('\n');
+		return recombine(parts);
+	}
+
+	let end = lines.length;
+	for (let i = idx + 1; i < lines.length; i++) {
+		const l = lines[i];
+		if (l.length === 0) continue;
+		if (!/^\s/.test(l)) {
+			end = i;
+			break;
+		}
+	}
+	const before = lines.slice(0, idx);
+	const after = lines.slice(end);
+	parts.fmBody = [...before, ...block, ...after].join('\n');
+	return recombine(parts);
+}
+
+function completeEntry(p: Partial<LearnMoreEntry>): LearnMoreEntry {
+	return { title: p.title ?? '', url: p.url ?? '', description: p.description ?? '' };
+}
+
+function escapeDouble(s: string): string {
+	return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
 function escapeKey(k: string): string {
 	return k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

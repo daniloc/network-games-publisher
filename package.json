@@ -1,6 +1,6 @@
 {
 	"name": "network-games-publisher",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Obsidian plugin for authoring posts to the Network Games blog via the GitHub Contents API.",
 	"main": "main.js",
 	"scripts": {

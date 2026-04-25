@@ -1,1 +1,99 @@
-/* Network Games Publisher styles */
+/* ------- Network Games Publisher ------- */
+
+/* ----- Status bar ----- */
+.publisher-deploy-status {
+	display: inline-flex;
+	align-items: center;
+	font-variant-numeric: tabular-nums;
+}
+
+/* ----- Post inspector view ----- */
+.publisher-post-view {
+	padding: var(--size-4-3);
+	overflow-y: auto;
+}
+
+.publisher-post-view-slug {
+	font-family: var(--font-monospace);
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	margin-bottom: var(--size-2-1);
+	overflow-wrap: anywhere;
+}
+
+.publisher-post-view-type {
+	font-size: var(--font-ui-smaller);
+	letter-spacing: 0.08em;
+	color: var(--text-faint);
+	margin-bottom: var(--size-4-3);
+}
+
+/* ----- Tag editor ----- */
+.publisher-tag-editor {
+	margin-top: var(--size-2-2);
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-2-2);
+}
+
+.publisher-tag-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--size-2-1);
+}
+
+.publisher-tag-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 1px 6px 1px 10px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 999px;
+	background: var(--background-secondary);
+	color: var(--text-normal);
+	font-size: var(--font-ui-smaller);
+}
+
+.publisher-tag-remove {
+	all: unset;
+	cursor: pointer;
+	color: var(--text-faint);
+	padding: 0 4px;
+	line-height: 1;
+}
+.publisher-tag-remove:hover {
+	color: var(--text-error);
+}
+
+.publisher-tag-input-row {
+	display: flex;
+}
+
+.publisher-tag-input {
+	width: 100%;
+	padding: 4px 8px;
+	background: var(--background-modifier-form-field);
+	color: var(--text-normal);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	font-size: var(--font-ui-small);
+}
+
+.publisher-tag-suggestions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--size-2-1);
+}
+
+.publisher-tag-suggestion {
+	cursor: pointer;
+	padding: 1px 8px;
+	border: 1px dashed var(--background-modifier-border);
+	border-radius: 999px;
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+.publisher-tag-suggestion:hover {
+	color: var(--text-normal);
+	border-color: var(--text-accent);
+}
